@@ -1,0 +1,774 @@
+[Rainmeter]
+Update=50
+AccurateText=1
+DynamicWindowSize=1
+
+[Metadata]
+Name=SpectrumSkin
+Author=YourName
+Information=Your information
+
+[Variables]
+Scale=1.0
+Alpha=50
+AnalyzerPort=DefaultOutput
+AudioDevice=#AudioDevice#
+Bands=32
+BarColor=255,0,0
+BarHeight=120
+BarSpacingX=2
+BarSpacingY=10
+BarWidth=12
+BlurRadius=2
+FFTAttack=10
+FFTDecay=250
+FFTSize=4096
+FreqMax=15000
+FreqMin=50
+Gain=(#BarHeight# * 1.5)
+Jump=10
+PeakAttack=15
+PeakDecay=250
+Percent=75
+RMSAttack=15
+RMSDecay=200
+RMSGain=120.0
+MaxSensitivity=60
+MinSensitivity=50
+LowSensitivity=10
+HighSensitivity=50
+StrokeColor=#fff
+StrokeWidth=0
+Threshold=0.015
+Visibility=((#BarWidth# + 1) * #Scale#)
+
+
+BinWidth=10
+OverlapBoost=6
+CascadesCount=4
+UpdateRate=20
+FreqMin=20
+FreqMax=2000
+Sensitivity=51
+Attack=30
+Decay=80
+BlurRadius=1
+
+[BandsGenerator]
+Measure=Script
+ScriptFile=#@#Scripts/AudioAnalyzer.lua
+BandsCount=#Bands#
+Disabled=1
+
+[BG]
+Meter=Shape
+Shape=Rectangle 0,0,(((#BarWidth# + #BarSpacingX#) * (#Bands# - 1)) * #Scale#), ((((#BarHeight# * 2) + #BarSpacingY#) * #Scale#) * (#Percent# / 100)), 20 | FillColor 0,0,0,1
+
+;======================================;
+;------------- Measures ---------------;
+;======================================;
+[MeasureWin7Audio]
+Measure=Plugin
+Plugin=Win7AudioPlugin
+
+[MeasureVolume]
+Measure=Calc
+Formula=[MeasureWin7Audio:]
+OnChangeAction=[!CommandMeasure MeasureAudioRaw "LuaScript:DrawBars()"]
+MaxValue=100
+MinValue=0
+UpdateDivider=-1
+DynamicVariables=1
+
+
+;[MeasureDynamicSensitivity]
+;Measure=Calc
+;Formula=[MeasureWin7Audio:]
+;IfCondition=[MeasureWin7Audio:] <= 5
+;IfTrueAction=[!SetOption MeasureAudioRaw Sensitivity "80"]
+;IfFalseAction=[!SetOption MeasureAudioRaw Sensitivity "(80 - ([MeasureWin7Audio:] - 5) / 2)"]
+;DynamicVariables=1
+
+[SensitivityText]
+Measure=Calc
+Formula=[MeasureWin7Audio:]
+IfCondition=[MeasureWin7Audio:] <= 5
+IfTrueAction=[!SetOption SensitivityText Formula "80"]
+IfFalseAction=[!SetOption SensitivityText Formula "(80 - ([MeasureWin7Audio:] - 5) / 2)"]
+DynamicVariables=1
+
+[TestText]
+Meter=STRING
+X=0
+Y=0
+AntiAlias=1
+Text=[SensitivityText]
+DynamicVariables=1
+
+;[MeasureAudioRaw]
+;Measure=Plugin
+;Plugin=AudioLevel
+;Port=Output
+;;ID=#AudioDevice#
+;Bands=#Bands#
+;FFTAttack=#FFTAttack#
+;FFTDecay=#FFTDecay#
+;FFTOverlap=(#FFTSize#/2)
+;FFTSize=#FFTSize#
+;FreqMin=#FreqMin#
+;FreqMax=#FreqMax#
+;Sensitivity=
+
+[MeasureAudioRaw]
+Measure=Plugin
+Plugin=AudioAnalyzer
+Type=Parent
+ProcessingUnits=Main
+
+[MeasureAudio]
+Measure=Plugin
+Plugin=AudioAnalyzer
+Type=Parent
+ProcessingUnits=Main
+
+[Main]
+; Set up the Main processing unit as per the documentation
+Unit-Main=Channels Auto | Handlers MainFFT -> MainBR -> MainBCT -> MainTR -> MainFinalOutput | TargetRate 8000 | Filter like-a
+
+[MainFFT]
+Handler-MainFFT=Type FFT | BinWidth 10 | OverlapBoost 6 | CascadesCount 4 | WindowFunction Hann
+
+[MainBR]
+Handler-MainBR=Type BandResampler | Bands Linear(Count 120, FreqMin 20, FreqMax 2000) | CubicInterpolation true
+
+[MainBCT]
+Handler-MainBCT=Type BandCascadeTransformer | MixFunction Product | MinWeight 0.01 | TargetWeight 2
+
+[MainTR]
+Handler-MainTR=Type TimeResampler | Attack 30 | Decay 80 | UpdateRate ([#UpdateRate]*2) | Transform dB, Map(From -51 : -0, to 5 : 100), Clamp(to 5 : 100)
+
+[MainFinalOutput]
+Handler-MainFinalOutput=Type UniformBlur | Radius 2.2
+
+[MeasureAudio_Band0]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=0
+
+[MeasureAudio_Band1]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=1
+
+[MeasureAudio_Band2]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=2
+
+[MeasureAudio_Band3]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=3
+
+[MeasureAudio_Band4]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=4
+
+[MeasureAudio_Band5]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=5
+
+[MeasureAudio_Band6]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=6
+
+[MeasureAudio_Band7]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=7
+
+[MeasureAudio_Band8]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=8
+
+[MeasureAudio_Band9]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=9
+
+[MeasureAudio_Band10]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=10
+
+[MeasureAudio_Band11]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=11
+
+[MeasureAudio_Band12]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=12
+
+[MeasureAudio_Band13]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=13
+
+[MeasureAudio_Band14]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=14
+
+[MeasureAudio_Band15]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=15
+
+[MeasureAudio_Band16]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=16
+
+[MeasureAudio_Band17]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=17
+
+[MeasureAudio_Band18]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=18
+
+[MeasureAudio_Band19]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=19
+
+[MeasureAudio_Band20]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=20
+
+[MeasureAudio_Band21]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=21
+
+[MeasureAudio_Band22]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=22
+
+[MeasureAudio_Band23]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=23
+
+[MeasureAudio_Band24]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=24
+
+[MeasureAudio_Band25]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=25
+
+[MeasureAudio_Band26]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=26
+
+[MeasureAudio_Band27]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=27
+
+[MeasureAudio_Band28]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=28
+
+[MeasureAudio_Band29]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=29
+
+[MeasureAudio_Band30]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=30
+
+[MeasureAudio_Band31]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=31
+
+[MeasureAudio_Band32]
+Measure=Plugin
+Plugin=AudioLevel
+Parent=MeasureAudioRaw
+Type=Band
+BandIdx=32
+
+;======================================;
+;--------------- Calcs ----------------;
+;======================================;
+[CalcGainAmplification]
+Measure=Calc
+Formula=log(#Gain#)
+UpdateDivider=-1
+
+[Calc_Band0]
+Measure=Calc
+Formula=MeasureAudio_Band1
+IfCondition=(MeasureAudio_Band0 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band0 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band0 Formula "MeasureAudio_Band0"]
+
+[Calc_Band1]
+Measure=Calc
+Formula=MeasureAudio_Band1
+IfCondition=(MeasureAudio_Band1 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band1 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band1 Formula "MeasureAudio_Band1"]
+
+[Calc_Band2]
+Measure=Calc
+Formula=MeasureAudio_Band2
+IfCondition=(MeasureAudio_Band2 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band2 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band2 Formula "MeasureAudio_Band2"]
+
+[Calc_Band3]
+Measure=Calc
+Formula=MeasureAudio_Band3
+IfCondition=(MeasureAudio_Band3 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band3 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band3 Formula "MeasureAudio_Band3"]
+
+[Calc_Band4]
+Measure=Calc
+Formula=MeasureAudio_Band4
+IfCondition=(MeasureAudio_Band4 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band4 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band4 Formula "MeasureAudio_Band4"]
+
+[Calc_Band5]
+Measure=Calc
+Formula=MeasureAudio_Band5
+IfCondition=(MeasureAudio_Band5 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band5 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band5 Formula "MeasureAudio_Band5"]
+
+[Calc_Band6]
+Measure=Calc
+Formula=MeasureAudio_Band6
+IfCondition=(MeasureAudio_Band6 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band6 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band6 Formula "MeasureAudio_Band6"]
+
+[Calc_Band7]
+Measure=Calc
+Formula=MeasureAudio_Band7
+IfCondition=(MeasureAudio_Band7 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band7 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band7 Formula "MeasureAudio_Band7"]
+
+[Calc_Band8]
+Measure=Calc
+Formula=MeasureAudio_Band8
+IfCondition=(MeasureAudio_Band8 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band8 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band8 Formula "MeasureAudio_Band8"]
+
+[Calc_Band9]
+Measure=Calc
+Formula=MeasureAudio_Band9
+IfCondition=(MeasureAudio_Band9 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band9 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band9 Formula "MeasureAudio_Band9"]
+
+[Calc_Band10]
+Measure=Calc
+Formula=MeasureAudio_Band10
+IfCondition=(MeasureAudio_Band10 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band10 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band10 Formula "MeasureAudio_Band10"]
+
+[Calc_Band11]
+Measure=Calc
+Formula=MeasureAudio_Band11
+IfCondition=(MeasureAudio_Band11 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band11 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band11 Formula "MeasureAudio_Band11"]
+
+[Calc_Band12]
+Measure=Calc
+Formula=MeasureAudio_Band12
+IfCondition=(MeasureAudio_Band12 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band12 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band12 Formula "MeasureAudio_Band12"]
+
+[Calc_Band13]
+Measure=Calc
+Formula=MeasureAudio_Band13
+IfCondition=(MeasureAudio_Band13 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band13 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band13 Formula "MeasureAudio_Band13"]
+
+[Calc_Band14]
+Measure=Calc
+Formula=MeasureAudio_Band14
+IfCondition=(MeasureAudio_Band14 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band14 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band14 Formula "MeasureAudio_Band14"]
+
+[Calc_Band15]
+Measure=Calc
+Formula=MeasureAudio_Band15
+IfCondition=(MeasureAudio_Band15 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band15 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band15 Formula "MeasureAudio_Band15"]
+
+[Calc_Band16]
+Measure=Calc
+Formula=MeasureAudio_Band16
+IfCondition=(MeasureAudio_Band16 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band16 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band16 Formula "MeasureAudio_Band16"]
+
+[Calc_Band17]
+Measure=Calc
+Formula=MeasureAudio_Band17
+IfCondition=(MeasureAudio_Band17 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band17 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band17 Formula "MeasureAudio_Band17"]
+
+[Calc_Band18]
+Measure=Calc
+Formula=MeasureAudio_Band18
+IfCondition=(MeasureAudio_Band18 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band18 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band18 Formula "MeasureAudio_Band18"]
+
+[Calc_Band19]
+Measure=Calc
+Formula=MeasureAudio_Band19
+IfCondition=(MeasureAudio_Band19 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band19 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band19 Formula "MeasureAudio_Band19"]
+
+[Calc_Band20]
+Measure=Calc
+Formula=MeasureAudio_Band20
+IfCondition=(MeasureAudio_Band20 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band20 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band20 Formula "MeasureAudio_Band20"]
+
+[Calc_Band21]
+Measure=Calc
+Formula=MeasureAudio_Band21
+IfCondition=(MeasureAudio_Band21 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band21 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band21 Formula "MeasureAudio_Band21"]
+
+[Calc_Band22]
+Measure=Calc
+Formula=MeasureAudio_Band22
+IfCondition=(MeasureAudio_Band22 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band22 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band22 Formula "MeasureAudio_Band22"]
+
+[Calc_Band23]
+Measure=Calc
+Formula=MeasureAudio_Band23
+IfCondition=(MeasureAudio_Band23 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band23 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band23 Formula "MeasureAudio_Band23"]
+
+[Calc_Band24]
+Measure=Calc
+Formula=MeasureAudio_Band24
+IfCondition=(MeasureAudio_Band24 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band24 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band24 Formula "MeasureAudio_Band24"]
+
+[Calc_Band25]
+Measure=Calc
+Formula=MeasureAudio_Band25
+IfCondition=(MeasureAudio_Band25 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band25 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band25 Formula "MeasureAudio_Band25"]
+
+[Calc_Band26]
+Measure=Calc
+Formula=MeasureAudio_Band26
+IfCondition=(MeasureAudio_Band26 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band26 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band26 Formula "MeasureAudio_Band26"]
+
+[Calc_Band27]
+Measure=Calc
+Formula=MeasureAudio_Band27
+IfCondition=(MeasureAudio_Band27 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band27 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band27 Formula "MeasureAudio_Band27"]
+
+[Calc_Band28]
+Measure=Calc
+Formula=MeasureAudio_Band28
+IfCondition=(MeasureAudio_Band28 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band28 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band28 Formula "MeasureAudio_Band28"]
+
+[Calc_Band29]
+Measure=Calc
+Formula=MeasureAudio_Band29
+IfCondition=(MeasureAudio_Band29 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band29 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band29 Formula "MeasureAudio_Band29"]
+
+[Calc_Band30]
+Measure=Calc
+Formula=MeasureAudio_Band30
+IfCondition=(MeasureAudio_Band30 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band30 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band30 Formula "MeasureAudio_Band30"]
+
+[Calc_Band31]
+Measure=Calc
+Formula=MeasureAudio_Band31
+IfCondition=(MeasureAudio_Band31 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band31 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band31 Formula "MeasureAudio_Band31"]
+
+[Calc_Band32]
+Measure=Calc
+Formula=MeasureAudio_Band32
+IfCondition=(MeasureAudio_Band32 <= #Threshold#)
+IfTrueAction=[!SetOption Calc_Band32 Formula "((#Visibility#/#Gain#))"]
+IfFalseAction=[!SetOption Calc_Band32 Formula "MeasureAudio_Band32"]
+;======================================;
+;------------- Spectrum ---------------;
+;======================================;
+[Spectrum]
+Meter=Shape
+;Container=BG
+DynamicVariables=1
+
+; Spectrum and Reflection for Band 0
+Shape=Rectangle 0, ((#BarHeight# * #Scale#) + ([MeasureAudio_Band0] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band0] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape2=Rectangle 0, (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band0] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band0] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend MySharedModifiers
+
+; Spectrum and Reflection for Band 1
+Shape=Rectangle 0, ((#BarHeight# * #Scale#) + ([MeasureAudio_Band1] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band1] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape2=Rectangle 0, (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band1] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band1] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend MySharedModifiers
+
+; Spectrum and Reflection for Band 2
+Shape3=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 1), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band2] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band2] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape4=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 1), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band2] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band2] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 3
+Shape5=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 2), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band3] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band3] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape6=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 2), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band3] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band3] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 4
+Shape7=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 3), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band4] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band4] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape8=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 3), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band4] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band4] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 5
+Shape9=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 4), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band5] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band5] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape10=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 4), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band5] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band5] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 6
+Shape11=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 5), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band6] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band6] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape12=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 5), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band6] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band6] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 7
+Shape13=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 6), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band7] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band7] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape14=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 6), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band7] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band7] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 8
+Shape15=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 7), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band8] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band8] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape16=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 7), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band8] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band8] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 9
+Shape17=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 8), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band9] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band9] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape18=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 8), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band9] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band9] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 10
+Shape19=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 9), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band10] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band10] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape20=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 9), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band10] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band10] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 11
+Shape21=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 10), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band11] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band11] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape22=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 10), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band11] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band11] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 12
+Shape23=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 11), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band12] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band12] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape24=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 11), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band12] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band12] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 13
+Shape25=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 12), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band13] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band13] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape26=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 12), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band13] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band13] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 14
+Shape27=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 13), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band14] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band14] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape28=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 13), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band14] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band14] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 15
+Shape29=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 14), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band15] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band15] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape30=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 14), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band15] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band15] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 16
+Shape31=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 15), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band16] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band16] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape32=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 15), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band16] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band16] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 17
+Shape33=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 16), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band17] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band17] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape34=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 16), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band17] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band17] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 18
+Shape35=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 17), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band18] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band18] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape36=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 17), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band18] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band18] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 19
+Shape37=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 18), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band19] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band19] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape38=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 18), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band19] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band19] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 20
+Shape39=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 19), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band20] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band20] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape40=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 19), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band20] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band20] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 21
+Shape41=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 20), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band21] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band21] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape42=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 20), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band21] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band21] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 22
+Shape43=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 21), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band22] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band22] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape44=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 21), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band22] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band22] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 23
+Shape45=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 22), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band23] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band23] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape46=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 22), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band23] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band23] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 24
+Shape47=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 23), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band24] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band24] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape48=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 23), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band24] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band24] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 25
+Shape49=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 24), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band25] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band25] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape50=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 24), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band25] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band25] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 26
+Shape51=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 25), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band26] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band26] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape52=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 25), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band26] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band26] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 27
+Shape53=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 26), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band27] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band27] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape54=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 26), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band27] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band27] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 28
+Shape55=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 27), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band28] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band28] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape56=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 27), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band28] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band28] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 29
+Shape57=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 28), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band29] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band29] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape58=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 28), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band29] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band29] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 30
+Shape59=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 29), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band30] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band30] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape60=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 29), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band30] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band30] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+; Spectrum and Reflection for Band 31
+Shape61=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 30), ((#BarHeight# * #Scale#) + ([MeasureAudio_Band31] * #Jump#)), (#BarWidth# * #Scale#), (-1 * ([Calc_Band31] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor# | Extend SpectrumModifiers
+Shape62=Rectangle (((#BarWidth# + #BarSpacingX#) * #Scale#) * 30), (((#BarHeight# + #BarSpacingY# + #Jump#) * #Scale#) - ([MeasureAudio_Band31] * #Jump#)), (#BarWidth# * #Scale#), (([Calc_Band31] * #Gain#)), ((#BarWidth# / 2) * #Scale#) | Fill Color #BarColor#,#Alpha# | Extend SpectrumModifiers
+
+SpectrumModifiers=StrokeWidth #StrokeWidth# | Stroke Color #StrokeColor#
+
+;======================================;
+;--------------- Image ----------------;
+;======================================;
+[BackgroundImage]
+Meter=Image
+Container=Spectrum
+ImageName=#@#Images\radio-gradient.png
+W=(((#BarWidth# + #BarSpacingX#) * #Bands#) * #Scale#)
+H=(((#BarHeight# * 2) + #BarSpacingY#) * #Scale#)
+X=0
+Y=0
+AntiAlias=1
+UpdateDivider=-1
+ImageAlpha=255
+PreserveAspectRatio=0
