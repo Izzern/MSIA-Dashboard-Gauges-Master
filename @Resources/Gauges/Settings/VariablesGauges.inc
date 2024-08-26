@@ -1,5 +1,5 @@
 ﻿;=================================================================
-;------------ Gauges Calculated Variables Config File ------------
+;-------------------- Variables Config File ----------------------
 ;=================================================================
 ;To customize or restore defaults click on any of the Izzern Gauge Icons (CPU, GPU, RAM, etc.).
 
@@ -13,17 +13,14 @@ Spacing2=(2 * #ScaleGauge#)
 Spacing-2=(-2 * #ScaleGauge#)
 
 BGSize=(30 * #ScaleGauge#)
-BGSizeHc=(60 * #ScaleGauge#)
 
-IconWideH=(33 * #ScaleGauge#)
-IconWideX=(13 * #ScaleGauge#)
-IconWideY=(33 * #ScaleGauge#)
+IconWideH=(20 * #ScaleGauge#)
+IconWideX=(14 * #ScaleGauge#)
+IconWideY=(37 * #ScaleGauge#)
 
 IconSquareH=(20 * #ScaleGauge#)
 IconSquareX=#IconSquareH#
 IconSquareY=(38 * #ScaleGauge#)
-IconSquareHcX=(20 / 1.33 * #ScaleGauge#)
-IconSquareHcY=(38 / 1.2 * #ScaleGauge#)
 
 RoundLineOD=(60 * #ScaleGauge#)
 RoundLineID=(58 * #ScaleGauge#)
@@ -40,7 +37,7 @@ RoundlineEndBGRotationAngle=(Rad(233))
 ;RoundlineEndLength=(#ScaleGauge#*27)
 ;RoundlineEndWidth=(#ScaleGauge#*1.5)
 ;RoundlineEndStartAngle=(Rad(152.25))
-RoundlineEndRotationAngle=(Rad(232.5))
+;RoundlineEndRotationAngle=(Rad(232.5))
 
 BGRoundlineMeterNetOutLength=(#ScaleGauge#*50)
 BGRoundlineMeterNetOutStart=(Rad(154))
