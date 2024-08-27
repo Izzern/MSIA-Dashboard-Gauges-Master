@@ -454,7 +454,7 @@ Text="Gauge"
 AntiAlias=1
 DynamicVariables=1
 Hidden=1
-LeftMouseUpAction=[!WriteKeyValue Variables ActiveStyle "Gauge" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeX "30" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeY "24" "#@#\Gauges\Settings\VariablesUser.inc"][!Refresh][!Refresh "#PATH#\cpu usage"][!Refresh "#PATH#\gpu usage"][!Refresh "#PATH#\cpu temp"][!Refresh "#PATH#\gpu temp"][!Refresh "#PATH#\memory Usage"][!Refresh "#PATH#\network usage"][!Refresh "#PATH#\wifi connectivity"][!Refresh "#PATH#\fps Counter"][!HideMeterGroup "DropDown"][!UpdateMeter *][!Redraw]
+LeftMouseUpAction=[!WriteKeyValue Variables ActiveStyle "Gauge" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeX "30" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeY "24" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorPerct "[MeasureColor]" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorTemp "[MeasureColor]" "#@#\Gauges\Settings\VariablesUser.inc"][!Refresh][!Refresh "#PATH#\cpu usage"][!Refresh "#PATH#\gpu usage"][!Refresh "#PATH#\cpu temp"][!Refresh "#PATH#\gpu temp"][!Refresh "#PATH#\memory Usage"][!Refresh "#PATH#\network usage"][!Refresh "#PATH#\wifi connectivity"][!Refresh "#PATH#\fps Counter"][!HideMeterGroup "DropDown"][!UpdateMeter *][!Redraw]
 
 [DropdownHoneycomb]
 Meter=String
@@ -469,7 +469,7 @@ Text="Honeycomb"
 AntiAlias=1
 DynamicVariables=1
 Hidden=1
-LeftMouseUpAction=[!WriteKeyValue Variables ActiveStyle "Honeycomb" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeX "25" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeY "20" "#@#\Gauges\Settings\VariablesUser.inc"][!Refresh][!Refresh "#PATH#\cpu usage"][!Refresh "#PATH#\gpu usage"][!Refresh "#PATH#\cpu temp"][!Refresh "#PATH#\gpu temp"][!Refresh "#PATH#\memory Usage"][!Refresh "#PATH#\network usage"][!Refresh "#PATH#\wifi connectivity"][!Refresh "#PATH#\fps Counter"][!HideMeterGroup "DropDown"][!UpdateMeter *][!Redraw]
+LeftMouseUpAction=[!WriteKeyValue Variables ActiveStyle "Honeycomb" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeX "25" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeY "20" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorPerct "255,255,255,240" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorTemp "255,255,255,240" "#@#\Gauges\Settings\VariablesUser.inc"][!Refresh][!Refresh "#PATH#\cpu usage"][!Refresh "#PATH#\gpu usage"][!Refresh "#PATH#\cpu temp"][!Refresh "#PATH#\gpu temp"][!Refresh "#PATH#\memory Usage"][!Refresh "#PATH#\network usage"][!Refresh "#PATH#\wifi connectivity"][!Refresh "#PATH#\fps Counter"][!HideMeterGroup "DropDown"][!UpdateMeter *][!Redraw]
 
 [];===============================================================
 ;----------------------- Button Container ------------------------

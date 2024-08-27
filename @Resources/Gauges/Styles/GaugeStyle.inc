@@ -1,6 +1,27 @@
-[];===============================================================
+;=================================================================
 ;-------------------------- Gauge Style --------------------------
 ;=================================================================
+[Variables]
+BGSize=(30 * #ScaleGauge#)
+
+IconWideX=(13 * #ScaleGauge#)
+IconWideY=(33 * #ScaleGauge#)
+
+IconSquareX=#IconSquareH#
+IconSquareY=(38 * #ScaleGauge#)
+
+FPSStyleOffsetX=(0 * #ScaleGauge#)
+FPSStyleOffsetY=(0 * #ScaleGauge#)
+
+[StyleFPS] ;Text options
+FontColor=[MeasureColor]
+FontEffectColor=#BorderColorFPS#
+FontFace=#FontFaceFPS#
+FontSize=(#FontSizeLg# * #ScaleGauge#)
+StringAlign=#StringAlignCC#
+StringStyle=#StringStyleBold#
+StringEffect=#StringEffectBorder#
+
 [BG]
 Meter=Shape
 Shape=Ellipse #BGSize#,#BGSize#,#BGSize# | Fill Color #BGColor#,10 | StrokeWidth #Spacing1# | StrokeColor 100,100,100,10

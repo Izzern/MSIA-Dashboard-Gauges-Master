@@ -12,18 +12,18 @@ Spacing-1=(-1 * #ScaleGauge#)
 Spacing2=(2 * #ScaleGauge#)
 Spacing-2=(-2 * #ScaleGauge#)
 
-BGSize=(30 * #ScaleGauge#)
-BGSizeHc=(60 * #ScaleGauge#)
+;BGSize=(30 * #ScaleGauge#)
+;BGSizeHc=(60 * #ScaleGauge#)
 
 IconWideH=(33 * #ScaleGauge#)
-IconWideX=(13 * #ScaleGauge#)
-IconWideY=(33 * #ScaleGauge#)
+;IconWideX=(13 * #ScaleGauge#)
+;IconWideY=(33 * #ScaleGauge#)
 
 IconSquareH=(20 * #ScaleGauge#)
 IconSquareX=#IconSquareH#
-IconSquareY=(38 * #ScaleGauge#)
-IconSquareHcX=(20 / 1.33 * #ScaleGauge#)
-IconSquareHcY=(38 / 1.2 * #ScaleGauge#)
+;IconSquareY=(38 * #ScaleGauge#)
+;IconSquareHcX=(20 / 1.33 * #ScaleGauge#)
+;IconSquareHcY=(38 / 1.2 * #ScaleGauge#)
 
 RoundLineOD=(60 * #ScaleGauge#)
 RoundLineID=(58 * #ScaleGauge#)
