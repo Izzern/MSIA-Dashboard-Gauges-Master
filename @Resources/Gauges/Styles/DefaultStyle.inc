@@ -47,15 +47,6 @@ StringCase=#StringCaseLower#
 StringStyle=#StringStyleBold#
 StringEffect=#StringEffectBorder#
 
-[StyleFPS] ;Text options
-FontColor=[MeasureColor]
-FontEffectColor=#BorderColorFPS#
-FontFace=#FontFaceFPS#
-FontSize=(#FontSizeLg# * #ScaleGauge#)
-StringAlign=#StringAlignCC#
-StringStyle=#StringStyleBold#
-StringEffect=#StringEffectBorder#
-
 [StyleOverlay] ;Text options
 FontColor=[MeasureColor]
 FontEffectColor=#BorderColorFPS#

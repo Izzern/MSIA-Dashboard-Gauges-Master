@@ -137,7 +137,7 @@ AntiAlias=1
 
 [MeasureLayoutSelection]
 Measure=String
-String=#Layout#
+String=#ClockLayout#
 UpdateDivider=-1
 IfMatch=Chronometer
 IfMatchAction=[!SetOption ImageChronometer ImageTint "#ColorTint#"][!SetOption ImageChronometer02 ImageTint " "][!SetOption ImageCompactDigital ImageTint " "][!Redraw]
@@ -157,7 +157,7 @@ Y=(30 * #SettingsScale#)r
 H=(60 * #SettingsScale#)
 W=(60 * #SettingsScale#)
 DynamicVariables=1
-LeftMouseUpAction=[!WriteKeyValue Variables Layout "Chronometer" "#@#Clock\Settings\VariablesUser.inc"][!UpdateMeasure MeasureLayoutSelection][!Refresh "#PATH#\Clock"][!Refresh]
+LeftMouseUpAction=[!WriteKeyValue Variables ClockLayout "Chronometer" "#@#Clock\Settings\VariablesUser.inc"][!UpdateMeasure MeasureLayoutSelection][!Refresh "#PATH#\Clock"][!Refresh]
 
 [ImageChronometer02]
 Meter=Image
@@ -169,7 +169,7 @@ Y=(0 * #SettingsScale#)r
 H=(60 * #SettingsScale#)
 W=(60 * #SettingsScale#)
 DynamicVariables=1
-LeftMouseUpAction=[!WriteKeyValue Variables Layout "Chronometer02" "#@#Clock\Settings\VariablesUser.inc"][!UpdateMeasure MeasureLayoutSelection][!Refresh "#PATH#\Clock"][!Refresh]
+LeftMouseUpAction=[!WriteKeyValue Variables ClockLayout "Chronometer02" "#@#Clock\Settings\VariablesUser.inc"][!UpdateMeasure MeasureLayoutSelection][!Refresh "#PATH#\Clock"][!Refresh]
 
 [ImageCompactDigital]
 Meter=Image
@@ -181,4 +181,4 @@ Y=(0 * #SettingsScale#)r
 H=(60 * #SettingsScale#)
 W=(225 * #SettingsScale#)
 DynamicVariables=1
-LeftMouseUpAction=[!WriteKeyValue Variables Layout "CompactForecast" "#@#Clock\Settings\VariablesUser.inc"][!UpdateMeasure MeasureLayoutSelection][!Refresh "#PATH#\Clock"][!Refresh]
+LeftMouseUpAction=[!WriteKeyValue Variables ClockLayout "CompactForecast" "#@#Clock\Settings\VariablesUser.inc"][!UpdateMeasure MeasureLayoutSelection][!Refresh "#PATH#\Clock"][!Refresh]

@@ -6,7 +6,7 @@
 ;=================================================================
 Alpha=((#AlphaUser# / 100) * 255)
 
-Attack=10
+Attack=5
 
 ;BarColor=50,0,255
 BarSpacingY=5
@@ -17,7 +17,7 @@ BlurRadius=2
 CascadesCount=1
 Channel=Auto
 
-Decay=250
+Decay=100
 
 MaxHeight=(#BarHeight# * 0.4)
 MinHeight=0.01

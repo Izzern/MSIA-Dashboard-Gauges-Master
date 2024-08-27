@@ -8,7 +8,7 @@
 ;---------- User Selections -----------
 ;======================================
 NetAdapterNameSelection=Intel(R) I211 Gigabit Network Connection
-NetAdapterIPSelection=192.168.1.37
+NetAdapterIPSelection=192.168.1.41
 NetAdapterConnSelection=Connected
 NetAdapterDNSSelection=192.168.1.1
 MaxAdapterSpeed=1000
@@ -101,3 +101,8 @@ BGColorFPS=255,255,255
 GearTintFPS=155,155,155
 FPSIconTint=255,0,0
 BorderColorFPS=0,0,0
+
+;======================================
+;---------------- Clock ---------------
+;======================================
+ClockLayout=CompactForecast

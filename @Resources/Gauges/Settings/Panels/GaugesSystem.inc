@@ -17,7 +17,6 @@ Y=#SelectionFrameY#
 H=#SelectionFrameH#
 W=#SelectionFrameW#
 AntiAlias=1
-LeftMouseUpAction=[!HideMeterGroup "DropDown"][!UpdateMeter *][!Redraw]
 
 [TabSystem] 
 Meter=Shape
@@ -437,9 +436,28 @@ Meter=Shape
 Group=DropDown
 X=([StyleText:X] + (150 * #SettingsScale#))
 Y=15r
-Shape=Rectangle 0,0,(200 * #SettingsScale#),(70 * #SettingsScale#) | Fill Color 200,200,200,255 | StrokeWidth 2 | Stroke Color #ColorTint#,255
+Shape=Rectangle 0,0,(200 * #SettingsScale#),(70 * #SettingsScale#) | Fill Color #FontColor#,200 | StrokeWidth 2 | Stroke Color #ColorTint#,255
 Hidden=1
 DynamicVariables=1
+
+[DropdownGaugeBox]
+Meter=Shape
+Container=DropdownBox
+X=0r
+Y=4r ; Position these below the text meters
+DynamicVariables=1
+
+Shape=Rectangle 0,0,(200 * #SettingsScale#),(35 * #SettingsScale#) | StrokeWidth 0
+LeftMouseUpAction=[!WriteKeyValue Variables ActiveStyle "Gauge" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeX "30" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeY "24" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorPerct "[MeasureColor]" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorTemp "[MeasureColor]" "#@#\Gauges\Settings\VariablesUser.inc"][!Refresh][!Refresh "#PATH#\cpu usage"][!Refresh "#PATH#\gpu usage"][!Refresh "#PATH#\cpu temp"][!Refresh "#PATH#\gpu temp"][!Refresh "#PATH#\memory Usage"][!Refresh "#PATH#\network usage"][!Refresh "#PATH#\wifi connectivity"][!Refresh "#PATH#\fps Counter"][!HideMeterGroup "DropDown"][!UpdateMeter *][!Redraw]
+
+[DropdownHoneycombBox]
+Meter=Shape
+Container=DropdownBox
+Y=4r ; Position these below the text meters
+DynamicVariables=1
+
+Shape=Rectangle 0,(35 * #SettingsScale#),(200 * #SettingsScale#),(35 * #SettingsScale#) | StrokeWidth 0
+LeftMouseUpAction=[!WriteKeyValue Variables ActiveStyle "Honeycomb" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeX "25" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables TextGaugeY "20" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorPerct "255,255,255,240" "#@#\Gauges\Settings\VariablesUser.inc"][!WriteKeyValue Variables FontColorTemp "255,255,255,240" "#@#\Gauges\Settings\VariablesUser.inc"][!Refresh][!Refresh "#PATH#\cpu usage"][!Refresh "#PATH#\gpu usage"][!Refresh "#PATH#\cpu temp"][!Refresh "#PATH#\gpu temp"][!Refresh "#PATH#\memory Usage"][!Refresh "#PATH#\network usage"][!Refresh "#PATH#\wifi connectivity"][!Refresh "#PATH#\fps Counter"][!HideMeterGroup "DropDown"][!UpdateMeter *][!Redraw]
 
 [DropdownGauge]
 Meter=String
@@ -448,7 +466,7 @@ Group=DropDown
 X=10r
 Y=15r
 FontSize=(#FontSizeLG# * #SettingsScale#)
-FontColor=0,0,0
+FontColor=#FontEffectColor#
 StringAlign=LEFTCENTER
 Text="Gauge"
 AntiAlias=1
@@ -461,9 +479,9 @@ Meter=String
 MeterStyle=DisplayStyle
 Group=DropDown
 X=0r
-Y=25r
+Y=30r
 FontSize=(#FontSizeLG# * #SettingsScale#)
-FontColor=0,0,0
+FontColor=#FontEffectColor#
 StringAlign=LEFTCENTER
 Text="Honeycomb"
 AntiAlias=1

@@ -8,4 +8,5 @@ HandColorHour=#PercentLevel2#
 
 ModeClock=Dark
 
-Layout=CompactForecast
+Layout=Chronometer02
+ClockLayout=CompactForecast
