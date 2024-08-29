@@ -10,8 +10,11 @@ IconWideY=(33 * #ScaleGauge#)
 IconSquareX=#IconSquareH#
 IconSquareY=(38 * #ScaleGauge#)
 
-FPSStyleOffsetX=(0 * #ScaleGauge#)
-FPSStyleOffsetY=(0 * #ScaleGauge#)
+FPSIconOffsetX=(0 * #ScaleGauge#)
+FPSIconOffsetY=(0 * #ScaleGauge#)
+
+FPSTextOffsetX=(0 * #ScaleGauge#)
+FPSTextOffsetY=(0 * #ScaleGauge#)
 
 [StyleFPS] ;Text options
 FontColor=[MeasureColor]
